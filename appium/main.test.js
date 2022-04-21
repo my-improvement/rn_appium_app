@@ -1,23 +1,26 @@
 import driver, { config } from './driver';
 
 beforeAll(async () => {
-    if (process.argv.includes('ios')) {
-        await driver.init(config.iOS);
-    } else if(process.argv.includes('android')) {
-        await driver.init(config.android);
-    } else {
+    if (!process.argv.includes('ios') && !process.argv.includes('android')) {
         console.error('Please specify the platform either android or ios')
+
+        return
     }
+    
+    if(process.argv.includes('android')) {
+        await driver.init(config.android)
+    } else if(process.argv.includes('ios')) {
+        await driver.init(config.iOS)
+    }
+
+    await driver.setImplicitWaitTimeout(100000);
 })
 
-test('Test Accessibilty Id', async () => {
-    expect(await driver.elementByAccessibilityId('email')).toBeTruthy();
-    expect(await driver.elementByAccessibilityId('password')).toBeTruthy();
+test('Increment and decrement test', async () => {
+    expect(await driver.elementByAccessibilityId('splashscreen.title')).toBeTruthy();
 
-    const loginButton = await driver.elementByAccessibilityId('login-button')
-    await driver.clickElement(loginButton)
+    const startButton = await driver.elementByAccessibilityId('splashscreen.start')
+    await driver.clickElement(startButton)
 
-    setTimeout(async() => {
-        expect(await driver.elementByAccessibilityId('logged-in')).toBeTruthy();
-    }, 50);
+    expect(await driver.elementByAccessibilityId('counter.number')).toBeTruthy();
 });

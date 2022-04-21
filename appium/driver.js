@@ -1,6 +1,6 @@
 import wd from 'wd';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+jest.DEFAULT_TIMEOUT_INTERVAL = 600000;
 const PORT = 4723;
 
 export const config = {
@@ -20,4 +20,6 @@ export const config = {
     },
 }
 
-export default wd.promiseChainRemote('localhost', PORT);
+const driver = wd.promiseChainRemote('localhost', PORT)
+
+export default driver;
